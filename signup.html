@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up – ScholarSeek</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --blue: #2563EB; --blue-dark: #1d4ed8; --text: #111827; --border: #E5E7EB; }
+    body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; background: #F9FAFB; }
+    .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); width: 100%; max-width: 420px; }
+    h1 { font-size: 1.8rem; font-weight: 800; color: var(--text); margin-bottom: 24px; text-align: center; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .field input { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.9rem; outline: none; }
+    .field input:focus { border-color: var(--blue); }
+    .btn-signup { width: 100%; padding: 14px; background: var(--blue); color: white; border: none; border-radius: 50px; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
+    .btn-signup:hover { background: var(--blue-dark); }
+    .form-error { color: #EF4444; font-size: 0.8rem; margin-top: 4px; display: none; }
+    .footer-text { margin-top: 20px; text-align: center; font-size: 0.85rem; color: #6B7280; }
+    .footer-text a { color: var(--blue); text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Create Account</h1>
+    <div class="field">
+      <label>Full Name</label>
+      <input id="name" type="text" placeholder="Enter your name" />
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input id="email" type="email" placeholder="Enter your email" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="password" type="password" placeholder="Create a password" />
+    </div>
+    <div class="form-error" id="form-error"></div>
+    <button class="btn-signup" onclick="handleSignup()">Sign Up</button>
+    <p class="footer-text">Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+  <script>
+    async function handleSignup() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorBox = document.getElementById('form-error');
+      const btn = document.querySelector('.btn-signup');
+
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+      }
+
+      if (!name || !email || !password) {
+        showError('Please fill in all fields.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('Please enter a valid email address.');
+        return;
+      }
+
+      // The database requires a unique username, so build one from the email.
+      const base = email.split('@')[0].replace(/[^a-zA-Z0-9_.-]/g, '').slice(0, 30) || 'user';
+      const username = base + '_' + Math.floor(1000 + Math.random() * 9000);
+
+      btn.disabled = true;
+      errorBox.style.display = 'none';
+
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        body: new URLSearchParams({ name, username, email, password, role: 'student' })
+      }).catch(() => null);
+      const data = res ? await res.json().catch(() => ({})) : {};
+      btn.disabled = false;
+
+      if (!data.ok) {
+        showError(data.error || 'Cannot reach the server.');
+        return;
+      }
+      // The server already logged the new user in, so go straight to the search page.
+      window.location.href = 'universities.html';
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') handleSignup();
+    });
+  </script>
+</body>
+</html>

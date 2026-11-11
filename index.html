@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScholarSeek – Settle Your Education</title>
+  <meta name="description" content="ScholarSeek connects you with 200+ partner universities worldwide. Find your perfect education path with our expert consultants." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2563EB;
+      --blue-dark: #1d4ed8;
+      --blue-light: #EFF6FF;
+      --text: #111827;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo-text {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span { color: var(--blue); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--blue); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-outline-sm {
+      padding: 7px 18px;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      background: transparent;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-outline-sm:hover { background: var(--blue-light); }
+
+    .btn-primary-sm {
+      padding: 7px 18px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary-sm:hover { background: var(--blue-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.62) 40%, rgba(0,0,0,0.15) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 48px 60px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      color: white;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+
+    /* ── STATS ── */
+    .stats {
+      padding: 56px 60px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .stat-item {}
+
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-number span { color: var(--blue); }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 6px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* ── PARTNERS ── */
+    .partners {
+      background: var(--blue-light);
+      padding: 56px 60px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 36px;
+    }
+
+    .partner-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 24px 36px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .partner-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .partner-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .partner-badge .uni-color { font-weight: 900; }
+    .yale { color: #00356B; }
+    .harvard { color: #A51C30; }
+    .tokyo { color: #B7001A; }
+    .princeton { color: #E77500; }
+    .ucla { color: #2774AE; }
+    .kyoto { color: #6A1936; }
+    .michigan { color: #00274C; }
+    .stanford { color: #8C1515; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 64px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .testimonials .section-title { text-align: left; }
+
+    .testimonial-scroll {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .t-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .t-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .t-name {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .t-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .t-text {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .stars {
+      color: #FBBF24;
+      font-size: 0.75rem;
+      margin-bottom: 8px;
+    }
+
+    /* ── CTA ── */
+    .cta {
+      background: var(--blue-light);
+      padding: 64px 60px;
+    }
+
+    .cta .section-title { margin-bottom: 40px; }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+    }
+
+    .cta-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .cta-body {
+      padding: 20px;
+    }
+
+    .cta-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .cta-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 11px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--blue-dark); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #F9FAFB;
+      border-top: 1px solid var(--border);
+      padding: 48px 60px 32px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand .logo-text {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .footer-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 220px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--blue); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-bottom p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    .social-links a {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .social-links a:hover {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="15" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+        <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="#2563EB" opacity="0.15"/>
+        <path d="M10 12L16 16M16 16L22 12M16 16V24" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="16" cy="8" r="2.5" fill="#2563EB"/>
+        <circle cx="10" cy="12" r="2" fill="#2563EB"/>
+        <circle cx="22" cy="12" r="2" fill="#2563EB"/>
+        <circle cx="10" cy="20" r="2" fill="#2563EB"/>
+        <circle cx="22" cy="20" r="2" fill="#2563EB"/>
+        <circle cx="16" cy="24" r="2.5" fill="#2563EB"/>
+      </svg>
+      <span class="logo-text">Scholar<span>Seek</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li>
+        <a href="#">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Search
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 8.3 8.3l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
+          Contact
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Courses
+        </a>
+      </li>
+      <li>
+        <a href="opportunities.html">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Opportunities
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="login.html" class="btn-outline-sm">Login</a>
+      <a href="signup.html" class="btn-primary-sm">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img
+      class="hero-img"
+      src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1400&q=80"
+      alt="University campus"
+    />
+    <div class="hero-overlay">
+      <h1 class="hero-title">Settle Your<br/>Education</h1>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-item">
+      <div class="stat-number">200<span>+</span></div>
+      <div class="stat-label">Partner Universities<br/>Worldwide</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">1000<span>+</span></div>
+      <div class="stat-label">International<br/>Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">30<span>+</span></div>
+      <div class="stat-label">Countries<br/>Available</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">50<span>+</span></div>
+      <div class="stat-label">Professional<br/>Consultants</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PARTNER UNIVERSITIES -->
+  <section class="partners">
+    <h2 class="section-title">Our Partner Universities</h2>
+    <div class="partner-grid">
+      <div class="partner-badge"><span class="uni-color yale">Y</span> Yale University</div>
+      <div class="partner-badge"><span class="uni-color harvard">H</span> Harvard University</div>
+      <div class="partner-badge"><span class="uni-color tokyo">東</span> 東京大学</div>
+      <div class="partner-badge"><span class="uni-color princeton">P</span> Princeton University</div>
+      <div class="partner-badge"><span class="uni-color yale">奈</span> 奈良女子大学</div>
+      <div class="partner-badge"><span class="uni-color ucla">UCLA</span></div>
+      <div class="partner-badge"><span class="uni-color kyoto">京</span> Kyoto University</div>
+      <div class="partner-badge"><span class="uni-color michigan">M</span> University of Michigan</div>
+      <div class="partner-badge"><span class="uni-color stanford">S</span> Stanford University</div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <h2 class="section-title">What Our Clients Say</h2>
+    <div class="testimonial-scroll">
+
+      <div class="testimonial-card">
+        <div class="t-header">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2)">A</div>
+          <div>
+            <div class="t-name">Ayasha Okafor</div>
+            <div class="t-meta">Enrolled at University of Tokyo</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p class="t-text">ScholarSeek made the entire application process incredibly smooth. My consultant guided me step-by-step and I got accepted to my dream university!</p>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="t-header">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c)">R</div>
+          <div>
+            <div class="t-name">Ramona Guzman</div>
+            <div class="t-meta">Enrolled at UCLA</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p class="t-text">From choosing programs to visa paperwork, ScholarSeek handled everything. I couldn't have done it without their amazing team of consultants.</p>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="t-header">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">E</div>
+          <div>
+            <div class="t-name">Erik Lindström</div>
+            <div class="t-meta">Enrolled at Harvard University</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p class="t-text">I was accepted into Harvard thanks to the exceptional guidance from ScholarSeek. Their knowledge of the application process is truly unmatched.</p>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="t-header">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">B</div>
+          <div>
+            <div class="t-name">Beth Williams</div>
+            <div class="t-meta">Enrolled at Yale University</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p class="t-text">The scholarship programs they helped me apply to were life-changing. ScholarSeek truly lives up to its name — they helped me find the perfect opportunity.</p>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="t-header">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#fa709a,#fee140)">K</div>
+          <div>
+            <div class="t-name">Kenji Watanabe</div>
+            <div class="t-meta">Enrolled at Kyoto University</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p class="t-text">Moving to a new country for studies was intimidating, but ScholarSeek's consultants were there every step of the way. Truly exceptional service.</p>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="t-header">
+          <div class="t-avatar" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">M</div>
+          <div>
+            <div class="t-name">Maria Santos</div>
+            <div class="t-meta">Enrolled at Princeton University</div>
+          </div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p class="t-text">Professional, knowledgeable, and caring. My consultant at ScholarSeek went above and beyond to ensure my application stood out from thousands of others.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2 class="section-title">Get Started with ScholarSeek!</h2>
+    <div class="cta-grid">
+      <div class="cta-card">
+        <img class="cta-img" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80" alt="Consult with professionals" />
+        <div class="cta-body">
+          <div class="cta-label">Consult with Professionals</div>
+          <p class="cta-desc">Get personalized advice from our experienced consultants who have helped thousands of students achieve their educational goals.</p>
+          <a href="signup.html" class="btn-primary">Learn More</a>
+        </div>
+      </div>
+      <div class="cta-card">
+        <img class="cta-img" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&q=80" alt="Search universities" />
+        <div class="cta-body">
+          <div class="cta-label">Search Universities</div>
+          <p class="cta-desc">Explore our network of 200+ partner universities across 30+ countries and find the perfect academic fit for your ambitions.</p>
+          <a href="signup.html" class="btn-primary">Apply to Universities</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-text">Scholar<span>Seek</span></span>
+        <p class="footer-desc">ScholarSeek has been empowering students worldwide to access world-class education opportunities and international university programs.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Universities</a></li>
+          <li><a href="#">Scholarships</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Consulting</a></li>
+          <li><a href="#">Visa Support</a></li>
+          <li><a href="#">Applications</a></li>
+          <li><a href="#">Test Prep</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="#">support@scholarseek.com</a></li>
+          <li><a href="#">+1 (800) 123-4567</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ScholarSeek. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" title="Instagram">𝗶</a>
+        <a href="#" title="Twitter">𝗫</a>
+        <a href="#" title="LinkedIn">in</a>
+        <a href="#" title="Facebook">f</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – ScholarSeek</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --blue:#2563EB; --blue-dark:#1d4ed8; --blue-light:#DBEAFE; --text:#111827; --muted:#6B7280; --border:#E5E7EB; --green:#15803D; --red:#DC2626; }
+    [hidden] { display: none !important; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: #F9FAFB; min-height: 100vh; }
+    a { color: var(--blue); }
+
+    nav { display:flex; align-items:center; justify-content:space-between; padding:14px 40px; background:#fff; border-bottom:1px solid var(--border); }
+    .nav-logo { text-decoration:none; font-weight:800; letter-spacing:-0.5px; color:var(--text); }
+    .nav-logo span span { color: var(--blue); }
+    .nav-actions { display:flex; align-items:center; gap:10px; }
+    .nav-user { font-size:.85rem; font-weight:600; margin-right:6px; }
+    .btn-outline-sm { text-decoration:none; font-size:.85rem; font-weight:600; padding:8px 18px; border-radius:50px; border:1.5px solid #D1D5DB; color:var(--text); background:#fff; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 32px 24px 64px; }
+    h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
+    .sub { color: var(--muted); margin-bottom: 24px; font-size: .95rem; }
+    h2 { font-size: 1.05rem; margin-bottom: 14px; }
+
+    .card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:22px; margin-bottom:18px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px; }
+    .full { grid-column: 1 / -1; }
+    label { display:block; font-size:.78rem; font-weight:500; margin-bottom:5px; }
+    input, textarea, select { width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; font:inherit; font-size:.9rem; outline:none; background:#fff; }
+    input:focus, textarea:focus, select:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+    .check { display:flex; align-items:center; gap:8px; font-size:.9rem; font-weight:500; }
+    .check input { width:auto; }
+    .hint { color:var(--muted); font-size:.8rem; margin-top:6px; }
+
+    .row { border:1px dashed #D1D5DB; border-radius:10px; padding:14px; margin-bottom:12px; position:relative; }
+    .row .grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .remove { position:absolute; top:6px; right:10px; border:none; background:none; font-size:1.3rem; cursor:pointer; color:var(--muted); }
+    .remove:hover { color: var(--red); }
+
+    .btn { padding:11px 22px; background:var(--blue); color:#fff; border:none; border-radius:50px; font:inherit; font-weight:700; font-size:.9rem; cursor:pointer; }
+    .btn:hover { background: var(--blue-dark); }
+    .btn:disabled { opacity:.6; cursor:default; }
+    .btn-light { background:var(--blue-light); color:var(--blue-dark); }
+    .btn-light:hover { background:#BFDBFE; }
+    #msg { margin-top: 14px; font-size: .92rem; font-weight: 600; }
+    .ok { color: var(--green); }
+    .error { color: var(--red); }
+    @media (max-width: 640px) { nav { padding: 12px 16px; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo"><span>Scholar<span>Seek</span></span></a>
+    <div class="nav-actions" id="nav-actions">
+      <a href="admin_login.html" class="btn-outline-sm">Admin login</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1>Add university data</h1>
+    <p class="sub">Fill in the university, its programs and any scholarships. Students will see it in search results right away.</p>
+
+    <div class="card" id="gate" hidden><p id="gate-msg"></p></div>
+
+    <form id="uni-form" hidden>
+      <div class="card">
+        <h2>University</h2>
+        <div class="grid">
+          <div><label for="name">University name *</label><input id="name" maxlength="200" placeholder="e.g. Kyoto University" required /></div>
+          <div><label for="country">Country *</label><input id="country" list="country-list" maxlength="80" placeholder="e.g. Japan" required autocomplete="off" /><datalist id="country-list"></datalist></div>
+          <div><label for="city">City</label><input id="city" maxlength="100" placeholder="e.g. Kyoto" /></div>
+          <div><label for="website">Official website</label><input id="website" type="url" maxlength="300" placeholder="https://www.example.edu" /></div>
+          <div class="full"><label for="description">Description</label><textarea id="description" rows="2" maxlength="5000" placeholder="e.g. Japan's leading national university."></textarea></div>
+          <div class="full"><label for="notes">Admission notes</label><textarea id="notes" rows="2" maxlength="5000" placeholder="Application steps, documents, deadlines…"></textarea></div>
+          <div class="full"><label class="check"><input type="checkbox" id="partner" /> Partner university</label></div>
+        </div>
+
+        <div id="country-info" class="hint" hidden></div>
+        <div id="new-country" class="grid" style="margin-top:14px" hidden>
+          <div><label for="iso">Country ISO code * (2 letters)</label><input id="iso" maxlength="2" placeholder="e.g. JP" /></div>
+          <div><label for="living">Living cost / year (USD) *</label><input id="living" type="number" min="0" step="any" placeholder="e.g. 10000" /></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Programs *</h2>
+        <div id="programs"></div>
+        <button type="button" class="btn btn-light" id="add-program">+ Add program</button>
+      </div>
+
+      <div class="card">
+        <h2>Scholarships (optional)</h2>
+        <div id="scholarships"></div>
+        <button type="button" class="btn btn-light" id="add-scholarship">+ Add scholarship</button>
+      </div>
+
+      <button class="btn" type="submit" id="save-btn">Save university</button>
+      <div id="msg"></div>
+    </form>
+  </main>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    // Build DOM safely: only textContent, never innerHTML.
+    function el(tag, props, ...kids) {
+      const e = document.createElement(tag);
+      Object.assign(e, props || {});
+      kids.flat().forEach((k) => e.append(k));
+      return e;
+    }
+    async function api(path, opts) {
+      const res = await fetch(path, opts);
+      let data = {};
+      try { data = await res.json(); } catch (e) { /* non-JSON */ }
+      return { status: res.status, data };
+    }
+    const money = (n) => '$' + Math.round(n).toLocaleString('en-US');
+    function gate(msg, link) {
+      const m = $('#gate-msg');
+      m.textContent = msg;
+      if (link) m.append(' ', el('a', { href: link.href, textContent: link.text }), '.');
+      $('#gate').hidden = false;
+    }
+
+    let countries = [];
+
+    // ---------- access check ----------
+    async function init() {
+      let me;
+      try { me = (await api('/api/me')).data; }
+      catch (e) { return gate('Cannot reach the server. Start it with "python server.py" and open http://127.0.0.1:8080/admin.html'); }
+
+      if (me.loggedIn) {
+        const box = $('#nav-actions');
+        box.textContent = '';
+        const out = el('a', { href: '#', className: 'btn-outline-sm', textContent: 'Logout' });
+        out.onclick = async (e) => { e.preventDefault(); await api('/api/logout', { method: 'POST', body: new URLSearchParams({}) }); location.href = 'admin_login.html'; };
+        box.append(el('span', { className: 'nav-user', textContent: 'Hi, ' + me.user.name }), out);
+      }
+      if (!me.loggedIn) return gate('Please log in with an admin account.', { href: 'admin_login.html', text: 'Admin login' });
+      if (me.user.role !== 'admin') return gate('This page is only for admin accounts.', { href: 'universities.html', text: 'Go to university search' });
+
+      $('#uni-form').hidden = false;
+      const r = await api('/api/admin/countries');
+      if (r.data.ok) {
+        countries = r.data.countries;
+        $('#country-list').append(...countries.map((c) => el('option', { value: c.name })));
+      }
+      addProgram();
+    }
+
+    // ---------- country: existing vs new ----------
+    function updateCountryInfo() {
+      const typed = $('#country').value.trim().toLowerCase();
+      const known = countries.find((c) => c.name.toLowerCase() === typed);
+      const info = $('#country-info');
+      info.hidden = !(typed && known);
+      if (known) info.textContent = 'Existing country: its living cost (' + money(known.living) + '/year) is reused.';
+      $('#new-country').hidden = !typed || !!known;
+    }
+    $('#country').addEventListener('input', updateCountryInfo);
+
+    // ---------- repeatable rows ----------
+    function field(label, props) {
+      return el('div', {}, el('label', { textContent: label }), el('input', props));
+    }
+    function removable(row, container, keepOne) {
+      const x = el('button', { type: 'button', className: 'remove', title: 'Remove', textContent: '×' });
+      x.onclick = () => { if (!keepOne || container.children.length > 1) row.remove(); };
+      row.prepend(x);
+      container.append(row);
+    }
+    function addProgram() {
+      const row = el('div', { className: 'row' }, el('div', { className: 'grid' },
+        field('Major *', { name: 'major', maxLength: 120, placeholder: 'e.g. Computer Science' }),
+        field('Degree level', { name: 'degreeLevel', maxLength: 30, placeholder: 'Bachelor', value: 'Bachelor' }),
+        field('Tuition / year (USD) *', { name: 'tuition', type: 'number', min: 0, step: 'any', placeholder: 'e.g. 6500' }),
+        field('Min GPA (0–4)', { name: 'minGpa', type: 'number', min: 0, max: 4, step: '0.01', placeholder: 'e.g. 3.5' }),
+        field('Min IELTS (0–9)', { name: 'minIelts', type: 'number', min: 0, max: 9, step: '0.5', placeholder: 'e.g. 6.0' })));
+      removable(row, $('#programs'), true);
+    }
+    function addScholarship() {
+      const row = el('div', { className: 'row' }, el('div', { className: 'grid' },
+        field('Name *', { name: 'name', maxLength: 200, placeholder: 'e.g. MEXT Scholarship' }),
+        field('Coverage', { name: 'coverage', maxLength: 100, placeholder: 'e.g. Full tuition + stipend' }),
+        field('Amount (USD)', { name: 'amount', type: 'number', min: 0, step: 'any' }),
+        field('Min GPA', { name: 'minGpa', type: 'number', min: 0, max: 4, step: '0.01' }),
+        field('Deadline', { name: 'deadline', type: 'date' }),
+        field('Details', { name: 'details', maxLength: 2000 })));
+      removable(row, $('#scholarships'), false);
+    }
+    $('#add-program').onclick = addProgram;
+    $('#add-scholarship').onclick = addScholarship;
+
+    // Read all inputs of a row into an object keyed by input name.
+    function readRow(row) {
+      const out = {};
+      row.querySelectorAll('input').forEach((i) => { out[i.name] = i.value.trim(); });
+      return out;
+    }
+
+    // ---------- submit ----------
+    $('#uni-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = $('#msg');
+      const payload = {
+        name: $('#name').value, country: $('#country').value, city: $('#city').value,
+        website: $('#website').value, description: $('#description').value,
+        admissionNotes: $('#notes').value, partner: $('#partner').checked,
+        isoCode: $('#iso').value, livingCost: $('#living').value,
+        programs: [...document.querySelectorAll('#programs .row')].map(readRow),
+        // skip scholarship rows left completely blank
+        scholarships: [...document.querySelectorAll('#scholarships .row')].map(readRow).filter((r) => Object.values(r).some(Boolean)),
+      };
+      const btn = $('#save-btn');
+      btn.disabled = true;
+      msg.className = ''; msg.textContent = 'Saving…';
+      const { data } = await api('/api/admin/university', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+      }).catch(() => ({ data: {} }));
+      btn.disabled = false;
+
+      if (!data.ok) { msg.className = 'error'; msg.textContent = data.error || 'Could not save. Is the server running?'; return; }
+
+      msg.className = 'ok';
+      msg.textContent = 'Saved “' + payload.name.trim() + '” (ID ' + data.id + '). Students can now find it in search.';
+      // refresh the country list (a new country may have been created) and clear the form
+      const r = await api('/api/admin/countries');
+      if (r.data.ok) {
+        countries = r.data.countries;
+        $('#country-list').textContent = '';
+        $('#country-list').append(...countries.map((c) => el('option', { value: c.name })));
+      }
+      $('#uni-form').reset();
+      $('#programs').textContent = ''; $('#scholarships').textContent = '';
+      addProgram();
+      updateCountryInfo();
+    });
+
+    init();
+  </script>
+</body>
+</html>

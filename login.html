@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – ScholarSeek</title>
+  <meta name="description" content="Log in to your ScholarSeek account to continue your education journey." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #2563EB;
+      --blue-dark: #1d4ed8;
+      --blue-light: #DBEAFE;
+      --text: #111827;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --bg-panel: #D6E9FF;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── LEFT PANEL ── */
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 36px 56px;
+      background: #fff;
+      min-height: 100vh;
+    }
+
+    .logo-link {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: auto;
+    }
+
+    .logo-icon { width: 30px; height: 30px; }
+
+    .logo-text {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #111827;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span { color: var(--blue); }
+
+    .form-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 36px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+    }
+
+    .field input::placeholder { color: #C4C9D4; }
+
+    .btn-other {
+      width: 100%;
+      padding: 13px;
+      border: 1.5px solid #D1D5DB;
+      background: #fff;
+      color: var(--text);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-bottom: 14px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-other:hover { background: #F9FAFB; border-color: #9CA3AF; }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-login:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-login:active { transform: translateY(0); }
+
+    .footer-text {
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-text a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer-text a:hover { text-decoration: underline; }
+
+    /* ── RIGHT PANEL ── */
+    .right {
+      width: 47%;
+      position: relative;
+      background: linear-gradient(145deg, #C7DDFF 0%, #D9ECFF 50%, #BDD5FF 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* Swirl lines */
+    .right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse 200% 120% at 60% 10%, rgba(255,255,255,0.4) 0%, transparent 55%),
+        repeating-conic-gradient(rgba(255,255,255,0.06) 0deg, transparent 1deg, transparent 5deg);
+      pointer-events: none;
+    }
+
+    /* Swirl SVG overlay */
+    .swirl-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.18;
+    }
+
+    .right-photo {
+      position: relative;
+      width: 100%;
+      height: 75%;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    /* Floating emojis */
+    .float-item {
+      position: absolute;
+      font-size: 2.6rem;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+      animation: floatAnim 3s ease-in-out infinite;
+      user-select: none;
+    }
+
+    .float-item:nth-child(2) { animation-delay: -0.5s; }
+    .float-item:nth-child(3) { animation-delay: -1.2s; }
+    .float-item:nth-child(4) { animation-delay: -1.8s; }
+    .float-item:nth-child(5) { animation-delay: -2.3s; }
+    .float-item:nth-child(6) { animation-delay: -0.9s; }
+
+    @keyframes floatAnim {
+      0%, 100% { transform: translateY(0px) rotate(-3deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    .fi-1 { top: 6%; left: 28%; }
+    .fi-2 { top: 14%; left: 8%; font-size: 2rem; }
+    .fi-3 { top: 10%; right: 14%; font-size: 3rem; }
+    .fi-4 { top: 30%; right: 8%; font-size: 2.2rem; }
+    .fi-5 { top: 44%; left: 10%; font-size: 2rem; }
+    .fi-6 { top: 50%; right: 22%; font-size: 2rem; }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT -->
+  <div class="left">
+    <a href="index.html" class="logo-link">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="15" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+        <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="#2563EB" opacity="0.15"/>
+        <path d="M10 12L16 16M16 16L22 12M16 16V24" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="16" cy="8" r="2.5" fill="#2563EB"/>
+        <circle cx="10" cy="12" r="2" fill="#2563EB"/>
+        <circle cx="22" cy="12" r="2" fill="#2563EB"/>
+        <circle cx="10" cy="20" r="2" fill="#2563EB"/>
+        <circle cx="22" cy="20" r="2" fill="#2563EB"/>
+        <circle cx="16" cy="24" r="2.5" fill="#2563EB"/>
+      </svg>
+      <span class="logo-text">Scholar<span>Seek</span></span>
+    </a>
+
+    <div class="form-area">
+      <h1>Hello!<br/>Welcome Back!</h1>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Enter your email" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+      </div>
+
+      <button class="btn-other" type="button">Other Account</button>
+      <button class="btn-login" type="button" onclick="handleLogin()">Login</button>
+
+      <p class="footer-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
+      <p class="footer-text" style="margin-top:10px">Admin? <a href="admin_login.html">Admin login</a></p>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <!-- Swirl background -->
+    <svg class="swirl-svg" viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M250 50 Q450 200 300 400 Q150 600 350 750" stroke="white" stroke-width="1.5" fill="none"/>
+      <path d="M150 100 Q400 250 200 450 Q50 650 300 800" stroke="white" stroke-width="1" fill="none"/>
+      <path d="M350 0 Q500 200 350 400 Q200 600 400 800" stroke="white" stroke-width="1" fill="none"/>
+      <path d="M100 200 Q350 350 150 550 Q0 700 250 850" stroke="white" stroke-width="1.2" fill="none"/>
+      <path d="M300 50 Q150 250 300 450 Q450 650 250 800" stroke="white" stroke-width="0.8" fill="none"/>
+    </svg>
+
+    <!-- Floating emoji items -->
+    <span class="float-item fi-1">⭐</span>
+    <span class="float-item fi-2">🏖️</span>
+    <span class="float-item fi-3">🇫🇷</span>
+    <span class="float-item fi-4">🤩</span>
+    <span class="float-item fi-5">🗻</span>
+    <span class="float-item fi-6">📚</span>
+
+    <!-- Photo -->
+    <img
+      class="right-photo"
+      src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&q=80"
+      alt="Happy students"
+    />
+  </div>
+
+  <script>
+    async function handleLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      const res = await fetch('/api/login', { method: 'POST', body: new URLSearchParams({ email, password }) })
+        .catch(() => null);
+      const data = res ? await res.json().catch(() => ({})) : {};
+      if (!data.ok) {
+        alert(data.error || 'Cannot reach the server.');
+        return;
+      }
+      // Admins go to the admin page, everyone else to university search
+      window.location.href = (data.user && data.user.role === 'admin') ? 'admin.html' : 'universities.html';
+    }
+
+    // Allow Enter key to submit
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleLogin();
+    });
+  </script>
+
+</body>
+</html>
